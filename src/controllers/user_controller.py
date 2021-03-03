@@ -1,7 +1,7 @@
 from models.User import User
 from schemas.UserSchema import user_schema
 from main import db
-# from main import bcrypt
+from main import bcrypt
 # from flask_jwt_extended import create_access_token
 # from datetime import timedelta
 from flask import Blueprint, request, jsonify, abort
@@ -12,17 +12,17 @@ user = Blueprint('user', __name__, url_prefix="/user")
 @user.route("/register", methods=["POST"])
 def user_register():
     user_fields = user_schema.load(request.json)
-    # user = User.query.filter_by(email=user_fields["email"]).first()
+    user = User.query.filter_by(email=user_fields["email"]).first()
 
-    # if user:
-    #     return abort(400, description="Email already in use")
+    if user:
+        return abort(400, description="Email already in use")
 
     user = User()
 
     user.email = user_fields["email"]
-    # # user.password = bcrypt.generate_password_hash(
-    # #                 user_fields["password"]).decode("utf-8")
-    user.password = "Testing1"
+    user.password = bcrypt.generate_password_hash(
+                    user_fields["password"]).decode("utf-8")
+    # user.password = "Testing1"
 
     db.session.add(user)
     db.session.commit()

@@ -3,11 +3,13 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from marshmallow.exceptions import ValidationError
 from flask_migrate import Migrate
+from flask_bcrypt import Bcrypt
 
 
 db = SQLAlchemy()
 ma = Marshmallow()
 migrate = Migrate()
+bcrypt = Bcrypt()
 
 def create_app():
     from dotenv import load_dotenv
@@ -19,6 +21,7 @@ def create_app():
     db.init_app(app)
     ma.init_app(app)
     migrate.init_app(app, db)
+    bcrypt.init_app(app)
 
     from commands import db_commands
     app.register_blueprint(db_commands)
