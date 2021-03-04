@@ -4,12 +4,14 @@ from flask_marshmallow import Marshmallow
 from marshmallow.exceptions import ValidationError
 from flask_migrate import Migrate
 from flask_bcrypt import Bcrypt
+from flask_jwt_extended import JWTManager
 
 
 db = SQLAlchemy()
 ma = Marshmallow()
 migrate = Migrate()
 bcrypt = Bcrypt()
+jwt = JWTManager()
 
 def create_app():
     from dotenv import load_dotenv
@@ -22,6 +24,7 @@ def create_app():
     ma.init_app(app)
     migrate.init_app(app, db)
     bcrypt.init_app(app)
+    jwt.init_app(app)
 
     from commands import db_commands
     app.register_blueprint(db_commands)
