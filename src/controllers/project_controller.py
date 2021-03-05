@@ -3,7 +3,7 @@ from schemas.ProjectSchema import project_schema, projects_schema
 from main import db
 from main import bcrypt
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from flask import Blueprint, request, jsonify, abort
+from flask import Blueprint, request, jsonify, abort, Response
 
 project = Blueprint('project', __name__, url_prefix="/project")
 
@@ -49,6 +49,10 @@ def project_update(id):
     return jsonify(project_schema.dump(project))
 
 
-@project.route("/delete", methods=["DELETE"])
-def project_delete():
-    pass
+@project.route("/<int:id>", methods=["DELETE"])
+def project_delete(id):
+    project = Project.query.filter_by(id=id).first()
+
+    db.session.delete(project)
+    db.session.commit()
+    return abort(Response("Product deleted successfully"))
