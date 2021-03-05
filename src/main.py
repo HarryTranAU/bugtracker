@@ -13,6 +13,7 @@ migrate = Migrate()
 bcrypt = Bcrypt()
 jwt = JWTManager()
 
+
 def create_app():
     from dotenv import load_dotenv
     load_dotenv()

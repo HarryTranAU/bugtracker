@@ -1,5 +1,4 @@
 from main import db
-from sqlalchemy.orm import backref
 
 
 class User(db.Model):
