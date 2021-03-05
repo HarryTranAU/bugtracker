@@ -38,9 +38,15 @@ def project_single(id):
     return jsonify(project_schema.dump(project))
 
 
-@project.route("/update", methods=["PUT", "PATCH"])
-def project_update():
-    pass
+@project.route("/<int:id>", methods=["PUT", "PATCH"])
+def project_update(id):
+    project_fields = project_schema.load(request.json)
+    project = Project.query.filter_by(id=id)
+
+    project.update(project_fields)
+    db.session.commit()
+    project = Project.query.filter_by(id=id).first()
+    return jsonify(project_schema.dump(project))
 
 
 @project.route("/delete", methods=["DELETE"])
