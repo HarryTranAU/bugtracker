@@ -21,7 +21,10 @@ def ticket_create():
     new_ticket.title = ticket_fields["title"]
     new_ticket.description = ticket_fields["description"]
 
-    project = Project.query.filter_by(id=ticket_fields["project"]).first()
+    project = Project.query.filter_by(id=ticket_fields["project_id"]).first()
+
+    if not project:
+        return abort(400, description="Project does not exist")
 
     project.tickets.append(new_ticket)
     db.session.commit()
@@ -58,4 +61,4 @@ def ticket_delete(id):
 
     db.session.delete(ticket)
     db.session.commit()
-    return abort(Response("Product deleted successfully"))
+    return abort(Response("Ticket deleted successfully"))

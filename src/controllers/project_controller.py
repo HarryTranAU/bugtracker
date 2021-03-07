@@ -55,4 +55,4 @@ def project_delete(id):
 
     db.session.delete(project)
     db.session.commit()
-    return abort(Response("Product deleted successfully"))
+    return abort(Response("Project deleted successfully"))
