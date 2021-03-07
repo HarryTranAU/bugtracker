@@ -1,4 +1,5 @@
 from main import db
+from models.Ticket import Ticket
 
 projects_users = db.Table('projects_users',
                           db.Column('project_id', db.Integer,
@@ -16,6 +17,7 @@ class Project(db.Model):
     description = db.Column(db.String(), nullable=False)
     users = db.relationship('User', secondary=projects_users,
                             backref=db.backref('projects'), lazy='dynamic')
+    tickets = db.relationship("Ticket", backref="projects")
 
     def __repr__(self):
         return f"<Project {self.name}>"
