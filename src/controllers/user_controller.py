@@ -4,9 +4,9 @@ from main import db
 from main import bcrypt
 from flask_jwt_extended import create_access_token
 from datetime import timedelta
-from flask import Blueprint, request, jsonify, abort
+from flask import Blueprint, request, jsonify, abort, render_template
 
-user = Blueprint('user', __name__, url_prefix="/user")
+user = Blueprint('user', __name__)
 
 
 @user.route("/register", methods=["POST"])
@@ -42,4 +42,5 @@ def user_login():
     access_token = create_access_token(
                    identity=str(user.id), expires_delta=expiry)
 
-    return jsonify({"token": access_token})
+    # return jsonify({"token": access_token})
+    return render_template("dashboard.html", token=access_token)
