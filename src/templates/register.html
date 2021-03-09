@@ -5,12 +5,13 @@
 {% block content %}
     <form method="POST">
         {{ form.csrf_token }}
-        <p>{{ form.email.label }} {{ form.email(size=50) }}</p>
-        <p>{{ form.username.label }} {{ form.username(size=20) }}</p>
+        <p>{{ form.email.label }} {{ form.email(size=37) }}</p>
+        <p>{{ form.username.label }} {{ form.username(size=32) }}</p>
         <p>{{ form.password.label }} {{ form.password(size=32) }}</p>
         <p>{{ form.submit }}</p>
         {% if form.errors %}
         {{ form.errors }}
         {% endif %}
     </form>
+    <a href="{{ url_for('user.user_login') }}">Back to Login</a>
 {% endblock %}
