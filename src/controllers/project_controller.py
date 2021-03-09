@@ -1,29 +1,31 @@
 from models.Project import Project
 from schemas.ProjectSchema import project_schema, projects_schema
 from main import db
-from main import bcrypt
-from flask_jwt_extended import jwt_required, get_jwt_identity
-from flask import Blueprint, request, jsonify, abort, Response
+from flask import Blueprint, redirect, url_for, flash, render_template
+from flask_login import login_required
+from forms import ProjectForm
 
 project = Blueprint('project', __name__, url_prefix="/project")
 
 
-@project.route("/create", methods=["POST"])
-# @jwt_required()
+@project.route("/create", methods=["GET", "POST"])
+@login_required
 def project_create():
-    # current_user = get_jwt_identity()
-    # return jsonify(logged_in_as=current_user), 200
+    form = ProjectForm()
 
-    project_fields = project_schema.load(request.json)
+    if form.validate_on_submit():
+        new_project = Project()
+        new_project.name = form.proj_name.data
+        new_project.description = form.description.data
 
-    new_project = Project()
-    new_project.name = project_fields["name"]
-    new_project.description = project_fields["description"]
+        db.session.add(new_project)
+        db.session.commit()
 
-    db.session.add(new_project)
-    db.session.commit()
+        flash("Project successfully created")
+        return redirect(url_for('user.dashboard'))
 
-    return jsonify(project_schema.dump(new_project))
+    return render_template("new_project.html", form=form)
+    # return jsonify(project_schema.dump(new_project))
 
 
 @project.route("/all", methods=["GET"])

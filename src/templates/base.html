@@ -10,10 +10,11 @@
     <body>
         <div class="container">
             <div class="row">
-                {% if current_user.is_authenticated %}
+                {% if current_user.is_authenticated %} 
                 <nav class="nav border-right flex-column">
-                    <a class="nav-link active" href="#">Active</a>
-                    <a class="nav-link" href="#">Link</a>
+                    <span class="font-weight-bold pr-2">Logged in as: {{ name }}</span>
+                    <a class="nav-link" href="{{ url_for('user.dashboard') }}">Dashboard</a>
+                    <a class="nav-link" href="{{ url_for('project.project_create') }}">Create New Project</a>
                     <a class="nav-link" href="#">Link</a>
                     <a class="nav-link" href="{{ url_for('user.logout') }}">Logout</a>
                 </nav>

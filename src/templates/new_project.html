@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}New Project{% endblock %}
+{% block pagetitle %}New Project{% endblock %}
+
+{% block content %}
+    <form method="POST">
+        {{ form.csrf_token }}
+        <p>{{ form.proj_name.label }} {{ form.proj_name(size=100) }}</p>
+        <p>{{ form.description.label }} {{ form.description(size=100) }}</p>
+        <p>{{ form.submit }}</p>
+        {% if form.errors %}
+        {{ form.errors }}
+        {% endif %}
+    </form>
+    <a href="{{ url_for('user.dashboard') }}">Back to Dashboard</a>
+{% endblock %}
