@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-        <title> {% block title %} {% endblock %} </title>
+        <title> {% block title %} {% endblock %} - BugTracker </title>
     </head>
 
     <body>
@@ -19,6 +19,14 @@
                 </nav>
                 {% endif %}
                 <div class="container col">
+                    <h1>{% block pagetitle %} {% endblock %}</h1>
+                    {% with messages = get_flashed_messages() %}  
+                        {% if messages %}  
+                            {% for message in messages %}  
+                            <p>{{ message }}</p>  
+                            {% endfor %}  
+                        {% endif %}  
+                    {% endwith %}
                     {% block content %}
                     {% endblock %}
                 </div>

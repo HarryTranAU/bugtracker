@@ -1,7 +1,8 @@
 {% extends "base.html" %}
+{% block title %}Login{% endblock %}
+{% block pagetitle %}Login{% endblock %}
 
 {% block content %}
-    <h1>Login</h1>
     <form method="POST">
         {{ form.csrf_token }}
         <p>{{ form.username.label }} {{ form.username(size=20) }}</p>
@@ -11,4 +12,5 @@
         {{ form.errors }}
         {% endif %}
     </form>
+    <a href="{{ url_for('user.user_register') }}">Register New User</a>
 {% endblock %}
