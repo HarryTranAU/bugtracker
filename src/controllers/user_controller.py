@@ -1,46 +1,61 @@
 from models.User import User
 from schemas.UserSchema import user_schema
-from main import db
-from main import bcrypt
-from flask_jwt_extended import create_access_token
-from datetime import timedelta
-from flask import Blueprint, request, jsonify, abort, render_template
+from main import db, bcrypt, login_manager
+from flask import Blueprint, abort, render_template, redirect, url_for
+from forms import LoginForm, RegisterForm
+from flask_login import login_required, login_user, logout_user, current_user
+
 
 user = Blueprint('user', __name__)
 
 
-@user.route("/register", methods=["POST"])
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
+
+@user.route("/register", methods=["POST", "GET"])
 def user_register():
-    user_fields = user_schema.load(request.json)
-    user = User.query.filter_by(email=user_fields["email"]).first()
+    form = RegisterForm()
 
-    if user:
-        return abort(400, description="Email already in use")
+    if form.validate_on_submit():
+        user = User()
+        user.email = form.email.data
+        user.username = form.username.data
+        user.password = bcrypt.generate_password_hash(
+                            form.password.data).decode("utf-8")
 
-    user = User()
+        db.session.add(user)
+        db.session.commit()
 
-    user.email = user_fields["email"]
-    user.password = bcrypt.generate_password_hash(
-                    user_fields["password"]).decode("utf-8")
+        return redirect(url_for('user.user_login'))
 
-    db.session.add(user)
-    db.session.commit()
-
-    return jsonify(user_schema.dump(user))
+    return render_template("register.html", form=form)
 
 
-@user.route("/login", methods=["POST"])
+@user.route("/login", methods=["POST", "GET"])
 def user_login():
-    user_fields = user_schema.load(request.json)
-    user = User.query.filter_by(email=user_fields["email"]).first()
+    form = LoginForm()
 
-    if not user or not bcrypt.check_password_hash(
-                       user.password, user_fields["password"]):
-        return abort(401, description="Incorrect username or password")
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        if not user or not bcrypt.check_password_hash(
+                       user.password, form.password.data):
+            return abort(401, description="Incorrect username or password")
+        login_user(user)
+        return redirect(url_for("user.dashboard"))
 
-    expiry = timedelta(days=1)
-    access_token = create_access_token(
-                   identity=str(user.id), expires_delta=expiry)
+    return render_template("login.html", form=form)
 
-    # return jsonify({"token": access_token})
-    return render_template("dashboard.html", token=access_token)
+
+@user.route("/dashboard")
+@login_required
+def dashboard():
+    return render_template("dashboard.html", name=current_user.username)
+
+
+@user.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for("user.user_login"))

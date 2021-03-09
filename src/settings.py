@@ -3,6 +3,7 @@ import os
 
 class Config(object):
     JWT_SECRET_KEY = "Dev Key"
+    SECRET_KEY = "Dev Key"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     MAX_CONTENT_LENGTH = 1 * 1024 * 1024
 
