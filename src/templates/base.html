@@ -10,12 +10,14 @@
     <body>
         <div class="container">
             <div class="row">
+                {% if current_user.is_authenticated %}
                 <nav class="nav border-right flex-column">
                     <a class="nav-link active" href="#">Active</a>
                     <a class="nav-link" href="#">Link</a>
                     <a class="nav-link" href="#">Link</a>
-                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                    <a class="nav-link" href="{{ url_for('user.logout') }}">Logout</a>
                 </nav>
+                {% endif %}
                 <div class="container col">
                     {% block content %}
                     {% endblock %}
