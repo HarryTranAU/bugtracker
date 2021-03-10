@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Project{% endblock %}
+{% block pagetitle %}Edit Project{% endblock %}
+
+{% block content %}
+    <h2>Project ID: {{ project.id }}</h2>
+    <form method="POST">
+        {{ form.csrf_token }}
+        <p>Name: {{ project.name }}</p>
+        <p>{{ form.proj_name(size=100) }}</p>
+        <p>Description: {{ project.description }}</p>
+        <p>{{ form.description(size=100) }}</p>
+        <p>{{ form.edit }}</p>
+        {% if form.errors %}
+        {{ form.errors }}
+        {% endif %}
+    </form>
+    <p></p><button type="button" class="btn btn-outline-danger"><a href= {{ url_for('project.project_delete', id=project.id) }}>Delete Project</a></button></p>
+    <a href="{{ url_for('user.dashboard') }}">Back to Dashboard</a>
+{% endblock %}

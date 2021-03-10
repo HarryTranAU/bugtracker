@@ -34,3 +34,4 @@ class ProjectForm(FlaskForm):
                               validators=[DataRequired(),
                                           Length(min=1, max=255)])
     submit = SubmitField("New Project")
+    edit = SubmitField("Edit Project")

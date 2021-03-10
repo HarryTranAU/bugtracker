@@ -35,27 +35,37 @@ def project_index():
     return render_template("project_all.html", projects=projects)
 
 
-@project.route("/<int:id>", methods=["GET"])
-def project_single(id):
-    project = Project.query.filter_by(id=id).first()
-    return jsonify(project_schema.dump(project))
+# @project.route("/<int:id>", methods=["GET"])
+# def project_single(id):
+#     project = Project.query.filter_by(id=id).first()
+#     # return jsonify(project_schema.dump(project))
+#     return "project_single"
 
 
-@project.route("/<int:id>", methods=["PUT", "PATCH"])
+@project.route("/<int:id>", methods=["GET", "POST"])
 def project_update(id):
-    project_fields = project_schema.load(request.json)
-    project = Project.query.filter_by(id=id)
-
-    project.update(project_fields)
-    db.session.commit()
+    form = ProjectForm()
     project = Project.query.filter_by(id=id).first()
-    return jsonify(project_schema.dump(project))
+
+    if form.validate_on_submit():
+        project.name = form.proj_name.data
+        project.description = form.description.data
+        db.session.commit()
+
+    return render_template("project_edit.html", form=form, project=project)
+    # project_fields = project_schema.load(request.json)
+    # project = Project.query.filter_by(id=id)
+
+    # project.update(project_fields)
+    # db.session.commit()
+    # project = Project.query.filter_by(id=id).first()
+    # return jsonify(project_schema.dump(project))
 
 
-@project.route("/<int:id>", methods=["DELETE"])
+@project.route("/delete/<int:id>", methods=["GET"])
 def project_delete(id):
     project = Project.query.filter_by(id=id).first()
 
     db.session.delete(project)
     db.session.commit()
-    return abort(Response("Project deleted successfully"))
+    return redirect(url_for("project.project_index"))
