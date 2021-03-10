@@ -1,4 +1,5 @@
 from models.User import User
+from models.Ticket import Ticket
 from schemas.UserSchema import user_schema
 from main import db, bcrypt, login_manager
 from flask import Blueprint, abort, render_template, redirect, url_for, flash
@@ -60,7 +61,9 @@ def user_login():
 @user.route("/dashboard")
 @login_required
 def dashboard():
-    return render_template("dashboard.html")
+    user = User.query.filter_by(id=current_user.get_id()).first()
+    count = Ticket.query.filter_by(user_id=user.id).count()
+    return render_template("dashboard.html", count=count)
 
 
 @user.route("/logout")
