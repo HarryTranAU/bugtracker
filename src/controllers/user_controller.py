@@ -42,6 +42,7 @@ def user_register():
     return render_template("register.html", form=form)
 
 
+@user.route("/", methods=["GET"])
 @user.route("/login", methods=["POST", "GET"])
 def user_login():
     form = LoginForm()
