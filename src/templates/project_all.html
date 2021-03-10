@@ -20,7 +20,7 @@
                 <td>{{ project.name }}</td>
                 <td>{{ project.description }}</td>
                 <td><a href="{{ url_for('project.project_update', id=project.id) }}">Edit</a></td>
-                <td>View Tickets</td>
+                <td><a href="{{ url_for('project.project_single', id=project.id) }}">View Tickets</a></td>
             </tr>
             {% endfor %}
         </tbody>

@@ -1,4 +1,5 @@
 from models.Project import Project
+from models.Ticket import Ticket
 from schemas.ProjectSchema import project_schema, projects_schema
 from main import db
 from flask import Blueprint, redirect, url_for, flash, render_template
@@ -34,6 +35,13 @@ def project_index():
     return render_template("project_all.html", projects=projects)
 
 
+@project.route("/single/<int:id>", methods=["GET"])
+@login_required
+def project_single(id):
+    tickets = Ticket.query.filter_by(project_id=id).all()
+    return render_template("project_single.html", tickets=tickets)
+
+
 @project.route("/<int:id>", methods=["GET", "POST"])
 @login_required
 def project_update(id):
@@ -44,6 +52,7 @@ def project_update(id):
         project.name = form.proj_name.data
         project.description = form.description.data
         db.session.commit()
+        flash("Project Updated")
 
     return render_template("project_edit.html", form=form, project=project)
 
@@ -55,4 +64,5 @@ def project_delete(id):
 
     db.session.delete(project)
     db.session.commit()
+    flash("Project Deleted")
     return redirect(url_for("project.project_index"))
