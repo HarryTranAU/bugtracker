@@ -25,7 +25,6 @@ def project_create():
         return redirect(url_for('user.dashboard'))
 
     return render_template("project_new.html", form=form)
-    # return jsonify(project_schema.dump(new_project))
 
 
 @project.route("/all", methods=["GET"])
@@ -35,14 +34,8 @@ def project_index():
     return render_template("project_all.html", projects=projects)
 
 
-# @project.route("/<int:id>", methods=["GET"])
-# def project_single(id):
-#     project = Project.query.filter_by(id=id).first()
-#     # return jsonify(project_schema.dump(project))
-#     return "project_single"
-
-
 @project.route("/<int:id>", methods=["GET", "POST"])
+@login_required
 def project_update(id):
     form = ProjectForm()
     project = Project.query.filter_by(id=id).first()
@@ -53,16 +46,10 @@ def project_update(id):
         db.session.commit()
 
     return render_template("project_edit.html", form=form, project=project)
-    # project_fields = project_schema.load(request.json)
-    # project = Project.query.filter_by(id=id)
-
-    # project.update(project_fields)
-    # db.session.commit()
-    # project = Project.query.filter_by(id=id).first()
-    # return jsonify(project_schema.dump(project))
 
 
 @project.route("/delete/<int:id>", methods=["GET"])
+@login_required
 def project_delete(id):
     project = Project.query.filter_by(id=id).first()
 

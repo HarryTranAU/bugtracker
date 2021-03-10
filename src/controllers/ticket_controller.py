@@ -2,18 +2,13 @@ from models.Ticket import Ticket
 from models.Project import Project
 from schemas.TicketSchema import ticket_schema, tickets_schema
 from main import db
-from main import bcrypt
-from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask import Blueprint, request, jsonify, abort, Response
 
 ticket = Blueprint('ticket', __name__, url_prefix="/ticket")
 
 
 @ticket.route("/create", methods=["POST"])
-# @jwt_required()
 def ticket_create():
-    # current_user = get_jwt_identity()
-    # return jsonify(logged_in_as=current_user), 200
 
     ticket_fields = ticket_schema.load(request.json)
 
