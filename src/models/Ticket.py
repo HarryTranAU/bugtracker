@@ -9,6 +9,8 @@ class Ticket(db.Model):
     description = db.Column(db.String(), nullable=False)
     project_id = db.Column(db.Integer,
                            db.ForeignKey("projects.id"))
+    user_id = db.Column(db.Integer,
+                        db.ForeignKey("users.id"))
 
     def __repr__(self):
         return f"<Ticket {self.title}>"

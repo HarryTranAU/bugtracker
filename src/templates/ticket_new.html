@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Ticket{% endblock %}
+{% block pagetitle %}New Ticket{% endblock %}
+
+{% block content %}
+    <form method="POST">
+        {{ form.csrf_token }}
+        <span>{{ form.ticket_title.label }}</span>
+        <p> {{ form.ticket_title(size=100) }}</p>
+        <span>{{ form.description.label }}</span>
+        <p> {{ form.description(size=100) }}</p>
+        <span>{{ form.project_id.label }}</span>
+        <p> {{ form.project_id }}</p>
+        <span>{{ form.user_id.label }}</span>
+        <p> {{ form.user_id }}</p>
+        <p>{{ form.submit }}</p>
+        {% if form.errors %}
+        {{ form.errors }}
+        {% endif %}
+    </form>
+    <a href="{{ url_for('user.dashboard') }}">Back to Dashboard</a>
+{% endblock %}

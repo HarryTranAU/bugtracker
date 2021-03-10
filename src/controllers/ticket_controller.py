@@ -1,30 +1,38 @@
 from models.Ticket import Ticket
 from models.Project import Project
+from models.User import User
 from schemas.TicketSchema import ticket_schema, tickets_schema
 from main import db
-from flask import Blueprint, request, jsonify, abort, Response
+from flask import Blueprint, redirect, url_for, flash, render_template
+from flask_login import login_required
+from forms import TicketForm
 
 ticket = Blueprint('ticket', __name__, url_prefix="/ticket")
 
 
-@ticket.route("/create", methods=["POST"])
+@ticket.route("/create", methods=["GET", "POST"])
+@login_required
 def ticket_create():
+    form = TicketForm()
+    form.project_id.choices = [(p.id, p.name)
+                               for p in Project.query.order_by('id')]
+    form.user_id.choices = [(u.id, u.username)
+                            for u in User.query.order_by('id')]
+    projects = Project.query.all()
 
-    ticket_fields = ticket_schema.load(request.json)
+    if form.validate_on_submit():
+        new_ticket = Ticket()
+        new_ticket.title = form.ticket_title.data
+        new_ticket.description = form.description.data
+        new_ticket.project_id = form.project_id.data
+        new_ticket.user_id = form.user_id.data
+        db.session.add(new_ticket)
+        db.session.commit()
 
-    new_ticket = Ticket()
-    new_ticket.title = ticket_fields["title"]
-    new_ticket.description = ticket_fields["description"]
+        flash("Ticket successfully created")
+        return redirect(url_for('user.dashboard'))
 
-    project = Project.query.filter_by(id=ticket_fields["project_id"]).first()
-
-    if not project:
-        return abort(400, description="Project does not exist")
-
-    project.tickets.append(new_ticket)
-    db.session.commit()
-
-    return jsonify(ticket_schema.dump(new_ticket))
+    return render_template("ticket_new.html", form=form, projects=projects)
 
 
 @ticket.route("/all", methods=["GET"])
