@@ -15,6 +15,6 @@
         {{ form.errors }}
         {% endif %}
     </form>
-    <p></p><button type="button" class="btn btn-outline-danger"><a href= {{ url_for('project.project_delete', id=project.id) }}>Delete Project</a></button></p>
+    <p><button type="button" class="btn btn-outline-danger"><a href= {{ url_for('project.project_delete', id=project.id) }}>Delete Project</a></button></p>
     <a href="{{ url_for('user.dashboard') }}">Back to Dashboard</a>
 {% endblock %}

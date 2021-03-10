@@ -50,14 +50,6 @@ def ticket_index():
     return render_template("ticket_all.html", tickets=tickets)
 
 
-# @ticket.route("/<int:id>", methods=["GET"])
-# @login_required
-# def ticket_single(id):
-#     # ticket = Ticket.query.filter_by(id=id).first()
-#     # return jsonify(ticket_schema.dump(ticket))
-#     pass
-
-
 @ticket.route("/<int:id>", methods=["GET", "POST"])
 @login_required
 def ticket_update(id):
@@ -84,12 +76,12 @@ def ticket_update(id):
                            user=user)
 
 
-@ticket.route("/<int:id>", methods=["DELETE"])
+@ticket.route("/delete/<int:id>", methods=["GET"])
 @login_required
 def ticket_delete(id):
-    # ticket = Ticket.query.filter_by(id=id).first()
+    ticket = Ticket.query.filter_by(id=id).first()
 
-    # db.session.delete(ticket)
-    # db.session.commit()
-    # return abort(Response("Ticket deleted successfully"))
-    pass
+    db.session.delete(ticket)
+    db.session.commit()
+    flash("Ticket Deleted")
+    return redirect(url_for("ticket.ticket_index"))
