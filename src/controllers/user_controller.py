@@ -60,7 +60,7 @@ def user_login():
 @user.route("/dashboard")
 @login_required
 def dashboard():
-    return render_template("dashboard.html", name=current_user.username)
+    return render_template("dashboard.html")
 
 
 @user.route("/logout")

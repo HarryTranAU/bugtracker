@@ -24,14 +24,15 @@ def project_create():
         flash("Project successfully created")
         return redirect(url_for('user.dashboard'))
 
-    return render_template("new_project.html", form=form)
+    return render_template("project_new.html", form=form)
     # return jsonify(project_schema.dump(new_project))
 
 
 @project.route("/all", methods=["GET"])
+@login_required
 def project_index():
     projects = Project.query.all()
-    return jsonify(projects_schema.dump(projects))
+    return render_template("project_all.html", projects=projects)
 
 
 @project.route("/<int:id>", methods=["GET"])
