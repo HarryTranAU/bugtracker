@@ -6,9 +6,9 @@
     <h2>Project ID: {{ project.id }}</h2>
     <form method="POST">
         {{ form.csrf_token }}
-        <p>Name: {{ project.name }}</p>
+        <span>Name: {{ project.name }}</span>
         <p>{{ form.proj_name(size=100) }}</p>
-        <p>Description: {{ project.description }}</p>
+        <span>Description: {{ project.description }}</span>
         <p>{{ form.description(size=100) }}</p>
         <p>{{ form.edit }}</p>
         {% if form.errors %}

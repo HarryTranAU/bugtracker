@@ -5,8 +5,10 @@
 {% block content %}
     <form method="POST">
         {{ form.csrf_token }}
-        <p>{{ form.username.label }} {{ form.username(size=32) }}</p>
-        <p>{{ form.password.label }} {{ form.password(size=32) }}</p>
+        <span>{{ form.username.label }}</span>
+        <p>{{ form.username(size=32) }}</p>
+        <span>{{ form.password.label }}</span>
+        <p>{{ form.password(size=32) }}</p>
         <p>{{ form.submit }}</p>
         {% if form.errors %}
         {{ form.errors }}

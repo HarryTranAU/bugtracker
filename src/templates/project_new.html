@@ -5,8 +5,10 @@
 {% block content %}
     <form method="POST">
         {{ form.csrf_token }}
-        <p>{{ form.proj_name.label }} {{ form.proj_name(size=100) }}</p>
-        <p>{{ form.description.label }} {{ form.description(size=100) }}</p>
+        <span>{{ form.proj_name.label }}</span>
+        <p> {{ form.proj_name(size=100) }}</p>
+        <span>{{ form.description.label }}</span>
+        <p> {{ form.description(size=100) }}</p>
         <p>{{ form.submit }}</p>
         {% if form.errors %}
         {{ form.errors }}
