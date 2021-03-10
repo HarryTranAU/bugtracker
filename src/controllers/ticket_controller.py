@@ -38,7 +38,7 @@ def ticket_create():
 @ticket.route("/all", methods=["GET"])
 def ticket_index():
     tickets = Ticket.query.all()
-    return jsonify(tickets_schema.dump(tickets))
+    return render_template("ticket_all.html", tickets=tickets)
 
 
 @ticket.route("/<int:id>", methods=["GET"])
