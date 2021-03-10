@@ -4,7 +4,7 @@ from models.User import User
 from schemas.TicketSchema import ticket_schema, tickets_schema
 from main import db
 from flask import Blueprint, redirect, url_for, flash, render_template
-from flask_login import login_required
+from flask_login import login_required, current_user
 from forms import TicketForm
 
 ticket = Blueprint('ticket', __name__, url_prefix="/ticket")
@@ -48,6 +48,14 @@ def ticket_create():
 def ticket_index():
     tickets = Ticket.query.all()
     return render_template("ticket_all.html", tickets=tickets)
+
+
+@ticket.route("/userall", methods=["GET"])
+@login_required
+def user_tickets():
+    user = User.query.filter_by(id=current_user.get_id()).first()
+    tickets = Ticket.query.filter_by(user_id=user.id).all()
+    return render_template("ticket_user.html", user=user, tickets=tickets)
 
 
 @ticket.route("/<int:id>", methods=["GET", "POST"])
