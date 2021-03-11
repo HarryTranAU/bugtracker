@@ -15,6 +15,10 @@ def project_create():
     form = ProjectForm()
 
     if form.validate_on_submit():
+        exists = Project.query.filter_by(name=form.proj_name.data).first()
+        if exists:
+            flash("Project Name exists. Please choose another.")
+            return redirect(url_for("project.project_create"))
         new_project = Project()
         new_project.name = form.proj_name.data
         new_project.description = form.description.data
