@@ -2,6 +2,14 @@
 {% block title %}Dashboard{% endblock %}
 {% block pagetitle %}Dashboard{% endblock %}
 
-{% block content %}
+{% block content %}  
     <p>You have <a href="{{ url_for('ticket.user_tickets') }}">{{ count }} ticket(s)</a> assigned.</p>
+    <section>
+        <h3>Getting Started:</h3>
+        <p>All Tickets need to be assigned a Project.</p>
+        <ol>
+            <li>Create a New Project</li>
+            <li>Create/assign a New Ticket</li>
+        </ol>
+    </section>
 {% endblock %}
