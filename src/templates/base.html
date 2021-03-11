@@ -16,11 +16,16 @@
                     <nav class="nav border-right flex-column">
                         <span class="font-weight-bold pr-2">Logged in as: {{ current_user.username }}</span>
                         <a class="nav-link" href="{{ url_for('user.dashboard') }}">Dashboard</a>
+                        <a class="nav-link disabled" href="#">------------</a>
+                        <a class="nav-link disabled" href="#">Projects</a>
                         <a class="nav-link" href="{{ url_for('project.project_create') }}">Create New Project</a>
                         <a class="nav-link" href="{{ url_for('project.project_index') }}">All Projects</a>
+                        <a class="nav-link disabled" href="#">------------</a>
+                        <a class="nav-link disabled" href="#">Tickets</a>
                         <a class="nav-link" href="{{ url_for('ticket.ticket_create') }}">Create New Ticket</a>
                         <a class="nav-link" href="{{ url_for('ticket.ticket_index') }}">All Tickets</a>
                         <a class="nav-link" href="{{ url_for('ticket.user_tickets') }}">My Tickets</a>
+                        <a class="nav-link disabled" href="#">------------</a>
                         <a class="nav-link" href="{{ url_for('user.logout') }}">Logout</a>
                     </nav>
                     {% endif %}
