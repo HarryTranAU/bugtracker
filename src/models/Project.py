@@ -17,7 +17,9 @@ class Project(db.Model):
     description = db.Column(db.String(), nullable=False)
     users = db.relationship('User', secondary=projects_users,
                             backref=db.backref('projects'), lazy='dynamic')
-    tickets = db.relationship("Ticket", backref="projects")
+    tickets = db.relationship("Ticket",
+                              backref="projects",
+                              cascade="all, delete")
 
     def __repr__(self):
         return f"<Project {self.name}>"
