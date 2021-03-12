@@ -6,6 +6,39 @@ Heroku deployed app can be found at bugtrackerapp.tk
 
 GitHub repo can be found at https://github.com/HarryTranAU/bugtracker
 
+## Installation
+
+```
+git clone https://github.com/HarryTranAU/bugtracker.git
+
+cd bugtracker
+
+python3 -m venv venv
+
+source venv/bin/activate
+
+pip install -r requirements.txt
+
+```
+
+setup .env with database URL
+
+```
+
+flask db init
+
+flask db upgrade
+
+```
+
+To run gunicorn server
+
+```
+
+gunicorn --pythonpath src wsgi:app
+
+```
+
 ## Purpose
 
 An Issue/Bug Tracker organises user issues and feature requests into tickets that allow teams to delegate task effectively within a team environment. In addition to task delegation, Issue Trackers allow for task prioritization, helping teams work on what is most important first.
